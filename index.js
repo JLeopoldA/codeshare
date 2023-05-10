@@ -6,6 +6,7 @@ let fileName = ""; // fileName is the name of the file being converted
 
 
 
+
 const allChars = [ // array of all characters
     ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i)), // lowercase letters
     ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)), // uppercase letters
@@ -37,19 +38,12 @@ function createKey() {
 }
 
 function parseDownload(file) {
-    let name = file.fileName;
-    let str = atob(file.file);
-    let blob = new Blob([str], { type: "text/plain"});
-    fs.writeFile("temp123456789.txt", blob, (err) => {
+    // console.log(file);
+    const buffer = Buffer.from(file.file, "base64");
+    fs.writeFile(file.name, buffer.toString("utf-8"), (err) => {
         if (err) throw err;
-        fs.readFile("temp123456789.txt", "utf-8", (data, err) => {
-            if (err) throw err;
-            fs.writeFile(name, data, (err) => {
-                if (err) throw err;
-                console.log("File successfully downloaded");
-            });
-        });
-    })
+        console.log(file.name + " was saved successfully. Thank you for using CODESHARE");
+    });
 }
 
 async function download(data) {
@@ -64,8 +58,8 @@ async function download(data) {
             body: JSON.stringify(data)
         });
         const result = await response.json();
-        console.log(result);
-        // parseDownload(result);
+        // console.log(result);
+        parseDownload(result);
     } catch (error) {
         console.error("Error: ", error);
     }
@@ -125,8 +119,8 @@ function convertFileToTxt(jsFile) {
 
 function downloadFileUsingId() {
     let fileInfo = {
-        id: process.argv[3],
-        key: process.argv[4]
+        id: process.argv[4],
+        key: process.argv[3]
     };
     download(fileInfo);
 }
