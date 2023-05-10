@@ -1,9 +1,9 @@
 // obtain file by passing file name as a second parameter
 // pass useremail as a potential parameter for user to receive email
 const selection = process.argv[2]; // file to be shared
-const programControls = ["-s", "-d"]; // '-s' is for "share", what follows is filename. '-d' is for "download", what follows '-d' is the download code
 const fs = require("fs");
 let fileName = ""; // fileName is the name of the file being converted
+
 
 
 
@@ -20,18 +20,13 @@ const keyChars = [
     ...Array.from({ length: 10 }, (_, i) => String(i))
 ];
 
-function createEncodedDictionary() {
-    let encodedDictionary = [];
-    for(let i = 0; i< allChars.length; i++) {
-        let randomCharacter = allChars[Math.floor(Math.random() * allChars.length)];
-        if(Math.random()) {
-            randomCharacter+=allChars[Math.floor(Math.random() * allChars.length)];
-        }
-        encodedDictionary.push(randomCharacter);
+
+function createUniqueID() {
+    let id = "";
+    for (let i = 0; i < 10; i++) {
+        id+=keyChars[Math.floor(Math.random() * keyChars.length)];
     }
-    console.log(encodedDictionary.length);
-    console.log(allChars.length);
-    return encodedDictionary;
+    return id;
 }
 
 function createKey() {
@@ -42,38 +37,70 @@ function createKey() {
     return key;
 }
 
-function shareFile(data) { // save data to database, data is object
-   console.log("here we share file");
+function parseDownload(file) {
+    // console.log(file);
+    const buffer = Buffer.from(file.file, "base64");
+    fs.writeFile(file.name, buffer.toString("utf-8"), (err) => {
+        if (err) throw err;
+        console.log(file.name + " was saved successfully. Thank you for using CODESHARE");
+    });
 }
 
-function encodeTxtFile(unencodedTxtFile) { // encode txt file here
-    let encodedDictionary = createEncodedDictionary();
-    let encodedTxtFile = "";
-    for(let j = 0; j < unencodedTxtFile.length; j++) {
-        if(allChars.indexOf(unencodedTxtFile[j]) > -1) {
-            encodedTxtFile += encodedDictionary[allChars.indexOf(unencodedTxtFile[j])];
-        } else {
-            encodedTxtFile += unencodedTxtFile[j];
-        }
+async function download(data) {
+    console.log(data);
+    try {
+        const response = await fetch("http://localhost:3000/api/download", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        // console.log(result);
+        parseDownload(result);
+    } catch (error) {
+        console.error("Error: ", error);
+    }
+}
+
+function uploadInfo(info) {
+    console.log("File Key: " + info.key);
+    console.log("File id: " + info.id);
+    console.log("Save 'Key' & 'ID' in order to access file");
+}
+
+async function upload(data) {
+    try {
+        const response = await fetch("http://localhost:3000/api/upload", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        uploadInfo(result);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+function processTxtFile(txtFile) {
+    fileName = process.argv[3];
+    let codePackage = {
+        name: fileName,
+        file: Buffer.from(txtFile).toString('base64'),
+        key: createKey(),
+        id: createUniqueID()
     }
 
-    let completeShareable = {
-        name: fileName,
-        dict: encodedDictionary,
-        c: encodedTxtFile,
-        k: createKey()
-    };
-    console.log(completeShareable.k);
-
-    // console.log(completeShareable.c)
     fs.unlink('codesharetemp123456789.txt', (err)=> {
         if (err) throw err;
-        shareFile(completeShareable); // share completed file object
-        fs.writeFile('example.txt', JSON.stringify(completeShareable), (err) => { // for testing purposes line 69 - 72
-            if (err) throw err;
-            console.log("file written");
-            console.log(completeShareable.name);
-        });
+        console.log(codePackage);
+        upload(codePackage);
     });
 }
 
@@ -84,57 +111,41 @@ function convertFileToTxt(jsFile) {
             if (err) throw err;
             fs.readFile('codesharetemp123456789.txt', 'utf8', (err, data) =>  {
                 if (err) throw err;
-                encodeTxtFile(data);
+                processTxtFile(data);
             });
         });
     });
 }
 
-function decodeFile(encodedFile) {
-    fileName = encodedFile.name; // obtaining filename
-    let dict = encodedFile.dict; // obtaining dictionary
-    let key = encodedFile.k; // obtaining key, although not needed
-    // console.log(key)
-    // let c = encodedFile.c;
-    // let decodedFile = "";
-    // for(let i = 0; i < c.length; i+2) {
-    //     console.log(c[i]);
-    //     if (c[i] !== "") {
-    //         let tempChar = (c[i]+c[i++]);
-    //         decodedFile += allChars[tempChar];
-    //     } else { decodedFile += c[i]; }
-    // }
-    // console.log(decodedFile);
-    // for (let i = 0; i < c.length; i++) {
-    //     decodedFile+=allChars[dict.indexOf(c[i])];
-    // }
-    // console.log(decodedFile);
-    // fs.writeFile('end.js', JSON.parse(decodedFile), (err) => {
-    //     if (err) throw err;
-    //     console.log("success");
-    // });
-    // console.log(key);
-}
-
-function downloadFileUsingId(dlFile) {
-    fs.readFile(dlFile, 'utf-8', (err, data) => { // for testing purposes line 111-114
-        if (err) throw err;
-        decodeFile(JSON.parse(data));
-    });
+function downloadFileUsingId() {
+    let fileInfo = {
+        id: process.argv[4],
+        key: process.argv[3]
+    };
+    download(fileInfo);
 }
 
 function run() {
-    if(selection == '-s') { // user is choosing to share file
+    if(selection == '-s' || selection == "--share" || selection == "share") { // user is choosing to share file
         console.log("share mode selected");
         fileName = process.argv[3]; // obtaining file name
-        console.log(process.argv[3]);
         convertFileToTxt(process.argv[3]); // pass in the argument of the file location
 
-    } else if (selection == '-d') { // user is choosing to download a shared file
+    } else if (selection == '-d' || selection == "--download" || selection == "download") { // user is choosing to download a shared file
         console.log("download mode selected");
-        console.log(process.argv[3]);
-        downloadFileUsingId(process.argv[3]); // pass in the ID file of code to be downloaded
-    }
-}
+        if (process.argv[3] == null || process.argv[4] == null) {
+            if (process.argv[3] == null) {
+                console.log("Must included ID to download");
+            } else {
+                console.log("Must include KEY to download");
+            }
+        } 
+        else {
+            downloadFileUsingId(process.argv[3]); // pass in the ID file of code to be downloaded
+        }
+    } else if (selection == '-h' || selection == "--help" || selection =="help") {
 
+    } else { console.log("Must input valid command"); }
+}
 run();
+
