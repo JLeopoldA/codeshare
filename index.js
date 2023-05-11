@@ -110,19 +110,19 @@ function downloadFileUsingId() {
 
 function help() { // help function displays commands
     const titleDecor = "============";
-    const npmTitle = titleDecor + ("CoDeShArE") + titleDecor;
-    const npmDescription = ["\nCodeshare allows you to quickly upload and share code.",
+    const npmTitle = titleDecor + ("CoDeSwAp") + titleDecor;
+    const npmDescription = ["\nCodeswap allows you to quickly upload and share code.",
         "Accounts are not needed, and you are provided with an ID and Key to provide access to uploaded file.",
         "This file is immediately deleted from our database upon download.",
         "Use for all purposes. EnJoY.\n"
     ];
-    const npmControls = ["Syntax: node codeshare [parameterHere] [fileName || KEY ID]\n",
-        "Uploading a file: node codeshare -s [fileNameHere]",
+    const npmControls = ["Syntax: node codeswap [parameterHere] [fileName || KEY ID]\n",
+        "Uploading a file: node codeswap -s [fileNameHere]",
         "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
-        "Examples: node codeshare share test.js\n",
-        "Downloading a file: node codeshare -d [KEY] [ID]",
+        "Examples: node codeswap share test.js\n",
+        "Downloading a file: node codeswap -d [KEY] [ID]",
         "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
-        "Example: node codeshare download Key12345 ID123456\n"
+        "Example: node codeswap download Key12345 ID123456\n"
     ];
     console.log(npmTitle);
     for (let i = 0; i < npmDescription.length; i++) {
