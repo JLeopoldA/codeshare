@@ -1,25 +1,12 @@
-// obtain file by passing file name as a second parameter
-// pass useremail as a potential parameter for user to receive email
-const selection = process.argv[2]; // file to be shared
+const selection = process.argv[2]; 
 const fs = require("fs");
-let fileName = ""; // fileName is the name of the file being converted
-
-
-
-
-const allChars = [ // array of all characters
-    ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i)), // lowercase letters
-    ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)), // uppercase letters
-    ...Array.from({ length: 10 }, (_, i) => String(i)), // digits
-    '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '+', '=', '[', ']', '{', '}', ';', ':', ',', '.', '/', '<', '>', '?', '|', '\\', '~'
-];
+let fileName = ""; 
 
 const keyChars = [
     ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(97+i)),
     ...Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i)),
     ...Array.from({ length: 10 }, (_, i) => String(i))
 ];
-
 
 function createUniqueID() {
     let id = "";
@@ -38,7 +25,6 @@ function createKey() {
 }
 
 function parseDownload(file) {
-    // console.log(file);
     const buffer = Buffer.from(file.file, "base64");
     fs.writeFile(file.name, buffer.toString("utf-8"), (err) => {
         if (err) throw err;
@@ -49,7 +35,7 @@ function parseDownload(file) {
 async function download(data) {
     console.log(data);
     try {
-        const response = await fetch("http://localhost:3000/api/download", {
+        const response = await fetch("https://codeshareserver.herokuapp.com/api/download", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -58,7 +44,6 @@ async function download(data) {
             body: JSON.stringify(data)
         });
         const result = await response.json();
-        // console.log(result);
         parseDownload(result);
     } catch (error) {
         console.error("Error: ", error);
@@ -73,7 +58,7 @@ function uploadInfo(info) {
 
 async function upload(data) {
     try {
-        const response = await fetch("http://localhost:3000/api/upload", {
+        const response = await fetch("https://codeshareserver.herokuapp.com/api/upload", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -99,7 +84,6 @@ function processTxtFile(txtFile) {
 
     fs.unlink('codesharetemp123456789.txt', (err)=> {
         if (err) throw err;
-        console.log(codePackage);
         upload(codePackage);
     });
 }
@@ -125,27 +109,51 @@ function downloadFileUsingId() {
     download(fileInfo);
 }
 
+function help() { // help function displays commands
+    const titleDecor = "============";
+    const npmTitle = titleDecor + ("CoDeShArE") + titleDecor;
+    const npmDescription = ["\nCodeshare allows you to quickly upload and share code.",
+        "Accounts are not needed, and you are provided with an ID and Key to provide access to uploaded file.",
+        "This file is immediately deleted from our database upon download.",
+        "Use for all purposes. EnJoY.\n"
+    ];
+    const npmControls = ["Syntax: node codeshare [parameterHere] [fileName || KEY ID]\n",
+        "Uploading a file: node codeshare -s [fileNameHere]",
+        "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
+        "Examples: node codeshare share test.js\n",
+        "Downloading a file: node codeshare -d [KEY] [ID]",
+        "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
+        "Example: node codeshare download Key12345 ID123456\n"
+    ];
+    console.log(npmTitle);
+    for (let i = 0; i < npmDescription.length; i++) {
+        console.log(npmDescription[i]);
+    }
+    for (let j = 0; j < npmControls.length; j++) {
+        console.log(npmControls[j]);
+    }
+}
+
 function run() {
     if(selection == '-s' || selection == "--share" || selection == "share") { // user is choosing to share file
-        console.log("share mode selected");
+        console.log("SHARE MODE SELECTED");
         fileName = process.argv[3]; // obtaining file name
         convertFileToTxt(process.argv[3]); // pass in the argument of the file location
-
     } else if (selection == '-d' || selection == "--download" || selection == "download") { // user is choosing to download a shared file
-        console.log("download mode selected");
+        console.log("DOWNLOAD MODE SELECTED");
         if (process.argv[3] == null || process.argv[4] == null) {
             if (process.argv[3] == null) {
-                console.log("Must included ID to download");
+                console.log("Must included KEY to download");
             } else {
-                console.log("Must include KEY to download");
+                console.log("Must include ID to download");
             }
         } 
         else {
             downloadFileUsingId(process.argv[3]); // pass in the ID file of code to be downloaded
         }
     } else if (selection == '-h' || selection == "--help" || selection =="help") {
-
-    } else { console.log("Must input valid command"); }
+        help();
+    } else { console.log("Must input valid command. Type 'node codeshare help'"); }
 }
 run();
 
