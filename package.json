@@ -1,15 +1,24 @@
 {
   "name": "codeshare",
   "version": "1.0.0",
-  "description": "share code with a friend",
-  "main": "codeshare.js",
+  "description": "CodeShare is a Node.Js package that enables you to easily share your coding files with others and download their coding files by providing unique keys and IDS",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Justin L. Acosta",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JLeopoldA/codeshare"
+  },
+  "keywords": [ "file sharing", "code sharing", "collaboration", "download", "upload", "key-based access", "web application", "REST API",
+    "code exchange", "data exchange"
+  ],
+  "author": "Justin L. Acosta  jleopoldacosta@gmail.com",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JLeopoldA/codeshare/issues"
+  },
+  "homepage": "https://github.com/JLeopoldA/codeshare#readme",
   "dependencies": {
-    "axios": "^1.4.0",
-    "chalk": "^5.2.0"
   }
 }
