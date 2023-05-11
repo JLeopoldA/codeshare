@@ -33,7 +33,6 @@ function parseDownload(file) {
 }
 
 async function download(data) {
-    console.log(data);
     try {
         const response = await fetch("https://codeshareserver.herokuapp.com/api/download", {
             method: "POST",
