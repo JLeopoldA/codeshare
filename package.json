@@ -1,14 +1,13 @@
 {
   "name": "codeswap",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CodeSwap is a Node.Js package that enables you to easily share your coding files with others and download their coding files by providing unique keys and IDS",
-  "main": "./bin/index.js",
+  "main": "index.js",
   "bin": {
     "codeswap": "./bin/codeswap.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node codeswap.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
