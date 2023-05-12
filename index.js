@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const selection = process.argv[2]; 
 const fs = require("fs");
 let fileName = "";    
@@ -115,13 +117,13 @@ function help() { // help function displays commands
         "This file is immediately deleted from our database upon download.",
         "Use for all purposes. EnJoY.\n"
     ];
-    const npmControls = ["Syntax: node codeswap [parameterHere] [fileName || KEY ID]\n",
-        "Uploading a file: node codeswap -s [fileNameHere]",
+    const npmControls = ["Syntax: \ncodeswap [parameterHere] [fileName || KEY ID]\n\n",
+        "Uploading a file: \ncodeswap -s [fileNameHere]\n\n",
         "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
-        "Examples: node codeswap share test.js\n",
-        "Downloading a file: node codeswap -d [KEY] [ID]",
+        "Examples: \ncodeswap share test.js\n\n",
+        "Downloading a file: \ncodeswap -d [KEY] [ID]\n\n",
         "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
-        "Example: node codeswap download Key12345 ID123456\n"
+        "Example: \ncodeswap download Key12345 ID123456"
     ];
     console.log(npmTitle);
     for (let i = 0; i < npmDescription.length; i++) {
