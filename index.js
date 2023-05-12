@@ -117,13 +117,18 @@ function help() { // help function displays commands
         "This file is immediately deleted from our database upon download.",
         "Use for all purposes. EnJoY.\n"
     ];
-    const npmControls = ["Syntax: \ncodeswap [parameterHere] [fileName || KEY ID]\n\n",
-        "Uploading a file: \ncodeswap -s [fileNameHere]\n\n",
+    const npmControls = ["Syntax: \n",
+        "codeswap [parameterHere] [fileName || KEY ID]\n\n",
+        "Uploading a file: \n",
+        "codeswap -s [fileNameHere]\n\n",
         "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
-        "Examples: \ncodeswap share test.js\n\n",
-        "Downloading a file: \ncodeswap -d [KEY] [ID]\n\n",
+        "Examples: \n",
+        "codeswap share test.js\n\n",
+        "Downloading a file: \n",
+        "codeswap -d [KEY] [ID]\n\n",
         "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
-        "Example: \ncodeswap download Key12345 ID123456"
+        "Example: \n",
+        "codeswap download Key12345 ID123456"
     ];
     console.log(npmTitle);
     for (let i = 0; i < npmDescription.length; i++) {
