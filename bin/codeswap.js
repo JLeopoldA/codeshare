@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-require("codeswap");
+let main = require("codeswap");
+main();
 
 
 
