@@ -1,6 +1,6 @@
 {
   "name": "codeswap",
-  "version": "1.1.2",
+  "version": "1.2.2",
   "description": "CodeSwap is a Node.Js package that enables you to easily share your coding files with others and download their coding files by providing unique keys and IDS",
   "main": "index.js",
   "bin": {
