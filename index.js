@@ -118,23 +118,16 @@ function help() { // help function displays commands
         "Use for all purposes. EnJoY.\n"
     ];
     const npmControls = ["Syntax:",
-        "codeswap [parameterHere] [fileName || KEY ID]",
-        "\n\n",
+        "codeswap [parameterHere] [fileName || KEY ID]\n",
         "Uploading a file:",
-        "codeswap -s [fileNameHere]",
-        "\n\n",
+        "codeswap -s [fileNameHere]\n",
         "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
-        "Examples:",
-        "\n",
-        "codeswap share test.js",
-        "\n\n",
+        "Example:",
+        "codeswap share test.js\n",
         "Downloading a file: ",
-        "\n",
-        "codeswap -d [KEY] [ID]",
-        "\n\n",
+        "codeswap -d [KEY] [ID]\n",
         "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
         "Example: ",
-        "\n",
         "codeswap download Key12345 ID123456"
     ];
     console.log(npmTitle);
