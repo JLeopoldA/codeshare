@@ -121,12 +121,12 @@ function help() { // help function displays commands
         "codeswap [parameterHere] [fileName || KEY ID]\n",
         "Uploading a file:",
         "codeswap -s [fileNameHere]\n",
-        "Other parameters to specify sharing other than '-s' are '--s' and 'share'",
+        "Other parameters to specify sharing other than '-s' are '--share' and 'share'",
         "Example:",
         "codeswap share test.js\n",
         "Downloading a file: ",
         "codeswap -d [KEY] [ID]\n",
-        "Additional parameters to specify downloading other than '-d' are '--d' and 'download'",
+        "Additional parameters to specify downloading other than '-d' are '--download' and 'download'",
         "Example: ",
         "codeswap download Key12345 ID123456"
     ];
