@@ -45,7 +45,4 @@ I intend to continue updating _codeswap_ as a passion project for terminal based
 
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 8fd6869ccf437e7b6fe1b3ada49cfc18eef4462d
